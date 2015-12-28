@@ -1,0 +1,140 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	background: #f6f6f6;
+	margin:0;
+	padding:0;
+}
+
+#layout {
+	width: 1060px;
+	background:#f6f6f6;
+	margin: 0 auto;
+}
+#container {
+	width:1190px;
+	background:#f6f6f6;
+	margin: 0 auto;
+}
+#sidebar1 {
+	float: left;
+	width: 180px;
+	background: #EADCAE;
+	padding-bottom: 10px;
+	overflow:hidden;
+}
+
+#sidebar1 a{
+	text-decoration:none;
+}
+	#sidebar1 a.active{
+			font-weight:bold;
+		}	
+.content1 {
+	border: 1px solid #CCC;
+        width: 698px;
+        overflow: hidden;
+        float: left;
+}
+
+
+.sidebar2 {
+	float: left;
+	width: 304px;
+	background: #EADCAE;
+	padding: 10px 0;
+		overflow:auto;
+}
+
+#logo{
+	width:960px;
+}
+.content{
+	width:1060px;
+	font-family: "Gill Sans", Arial, Helvetica, Calibri, sans-serif;
+	font-size: 14px;
+	letter-spacing: 1px;
+	text-decoration:none;
+}
+
+#topNav{
+	background-color:#e6e6e6;
+	height:18px;
+	width:100%;
+	}
+	
+	 #topNav #textnav {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #b64f1e;
+		font-family: "Helvetica Neue", arial, sans-serif;
+		font-weight:bold;
+		text-decoration:none;
+		text-align:center;
+		float:right;
+      }
+	  
+	  #topNav a{
+		  text-decoration:none;
+		  font-size: 11px;
+          text-transform: uppercase;
+		  font-family: "Helvetica Neue", arial, sans-serif;
+		  font-weight:bold;
+		  color: #ff4600;
+		  padding-right:10px;
+		  
+	  }
+	  
+	  .upper {
+		  background:url(images/rightarrow.gif)no-repeat 0 3px;
+		  padding-left:8px;
+		font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #b64f1e;
+		font-family: "Helvetica Neue", arial, sans-serif;
+		font-weight:bold;
+	  }
+	  
+	  .lower {
+		  background:url(images/arrowlwrlvl.png)no-repeat 7px 3px;
+		  padding-left:15px;
+		font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666666;
+		font-family: "Helvetica Neue", arial, sans-serif;
+		font-weight:bold;
+	  }
+	  
+	  .textheader {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666666;
+		font-family: Arial, Helvetica, sans-serif;
+		font-weight:bold;
+		text-decoration:none;
+      }
+	  
+	  .textcontent {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666666;
+		font-family: "Helvetica Neue", arial, sans-serif;
+		font-weight:bold;
+		text-decoration:none;
+      }
+	  
+	  .ui-borderBottom{border-bottom:1px solid #d3d3d3!important}
+	  
+	  	.button{
+		background:transparent;
+		padding:0px;
+		margin:0px;
+		border-color:transparent;
+	}
+}

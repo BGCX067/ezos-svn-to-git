@@ -1,0 +1,990 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Products</title>
+<link rel="stylesheet" type="text/css" href="ezos-style.css" />
+<!-- START FLASH OBJECT -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+<script type="text/javascript">swfobject.embedSWF("round_menu4.swf", "flashnav", "960", "70", "9.0.0");</script>
+<!-- END FLASHH OBJECT-->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!-- START ZOOMY -->
+<link type="text/css" href="zoomy/zoomy.css" rel="stylesheet" />
+<script src="zoomy/zoomy.min.js"></script>
+<!-- END ZOOMY -->
+
+<!-- START DRAG&DROP -->
+<link rel="stylesheet" href="dragdrop/main.css">
+<script src="dragdrop/jquery-ui-1.9.0.custom.min.js"></script>
+<!-- END DRAG&DROP -->
+
+<!-- START HORIZONTALLY SCROLL -->
+<script>
+    function goto(id, t){   
+        //animate to the div id
+        $(".contentbox-wrapper").stop().animate({"left": -($(id).position().left)}, 1200);  
+    }
+</script>
+<!-- END HORIZONTALLY SCROLL -->
+
+<!-- ZOOMY... -->
+<script defer>
+	$(function(){
+		$(".zoom").zoomy({border:'6px solid #fff'});
+	});
+</script>
+<!-- ...ZOOMY -->
+
+<!-- DRAG AND DROP... -->    
+<script>
+    var totalCost = 0;
+var totalQty = 0;
+    $(function () {
+
+		// jQuery UI Draggable
+		$("#product li").draggable({
+		
+			// brings the item back to its place when dragging is over
+			revert:true,
+		
+			// once the dragging starts, we decrease the opactiy of other items
+			// Appending a class as we do that with CSS
+			drag:function () {
+				$(this).addClass("active");
+				$(this).closest("#product").addClass("active");
+			},
+		
+			// removing the CSS classes once dragging is over.
+			stop:function () {
+				$(this).removeClass("active").closest("#product").removeClass("active");
+			}
+		});
+
+        // jQuery Ui Droppable
+		$(".basket").droppable({
+		
+			// The class that will be appended to the to-be-dropped-element (basket)
+			activeClass:"active",
+		
+			// The class that will be appended once we are hovering the to-be-dropped-element (basket)
+			hoverClass:"hover",
+		
+			// The acceptance of the item once it touches the to-be-dropped-element basket
+			// For different values http://api.jqueryui.com/droppable/#option-tolerance
+			tolerance:"touch",
+			drop:function (event, ui) {
+		
+				var basket = $(this),
+						move = ui.draggable,
+						itemId = basket.find("ul li[data-id='" + move.attr("data-id") + "']");
+						totalCost = +totalCost + +move.find("h2").html().substring(1);
+						totalCost = totalCost.toFixed(2);
+						document.getElementById('totalPrice').innerHTML=totalCost;
+				// To increase the value by +1 if the same item is already in the basket
+				if (itemId.html() != null) {
+					itemId.find("input").val(parseInt(itemId.find("input").val()) + 1);
+					
+				}
+				else {
+					// Add the dragged item to the basket
+					addBasket(basket, move);
+		
+					// Updating the quantity by +1" rather than adding it to the basket
+					move.find("input").val(parseInt(move.find("input").val()) + 1);
+				}
+				totalQty = +1 + +totalQty;
+				document.getElementById('totalQuantity').innerHTML=totalQty;
+			}
+		});
+
+
+
+        // This function runs onc ean item is added to the basket
+        function addBasket(basket, move) {
+			//price=$(this).find("h2").html();
+			//var pricetag=parseFloat(price.split('$')[1]);
+			basket.find("ul").append('<li data-id="' + move.attr("data-id") + '">'
+					+ '<span class="name">' + move.find("h3").html() + '</span>'
+					+ '<span class="price">' + move.find("h2").html().substring(1) + '</span>'
+					+ '<input class="count" value="1" type="text">' + '</input>'
+					+ '<button class="delete">&#10005;</button>');
+		}
+		
+
+
+//var price = $(source).find('p:eq(1)').html();
+					//addProduct(name, parseFloat(price.split('$')[1]));
+
+
+        // The function that is triggered once delete button is pressed
+        $(".basket ul li button.delete").live("click", function () {
+			var closestLi = $(this).closest("li");
+			var content = closestLi.html();
+			var price = content.split('ice">')[1].split('</span>')[0];
+			var quantity = $(this).closest("li").find('.count').val();
+			$(this).closest("li").remove();
+			totalCost = +totalCost - (+price * +quantity);
+			totalCost = Math.abs(totalCost);
+			totalQty = +totalQty - +quantity;
+			document.getElementById('totalQuantity').innerHTML=totalQty;
+			document.getElementById('totalPrice').innerHTML=totalCost.toFixed(2);
+		});
+
+    });
+</script>
+<!-- ...DRAG AND DROP -->  
+
+</head>
+
+<body>
+<div id="layout">
+<!-- START TOPNAV -->
+<div id="topNav"><div id="textnav">
+<a href="member.html">LOGIN</a> | <a href="register.html">SIGN-UP</a>
+</div></div>
+<!-- END TOPNAV -->
+
+<!-- START LOGO -->
+<object type="application/x-shockwave-flash" data="logo_animated.swf" 
+    width="1060" height="114"> 
+
+    <param name="movie" value="logo_animated.swf" />
+    <param name="quality" value="high" />
+</object>
+<!-- END LOGO -->
+
+<!-- START FLASH NAVIGATION -->
+<object type="application/x-shockwave-flash" data="round_menu4.swf" 
+    width="1060" height="70"> 
+
+    <param name="movie" value="round_menu4.swf" />
+    <param name="quality" value="high" />
+</object>
+<!-- END FLASH NAVIGATION -->
+
+<div id="sidebar1">
+<span class="upper">Foods</span><br />
+<a href="#" onClick="goto('#rice', this); return false"><span class="lower">Rice, Noodles & Pasta</span></a><br />
+<a href="#" onClick="goto('#snacks', this); return false"><span class="lower">Snacks & Tidbits</span></a><br />
+<a href="#" onClick="goto('#canned', this); return false"><span class="lower">Canned & Ready to Eat</span></a><br />
+<a href="#" onClick="goto('#breakfast', this); return false"><span class="lower">Breakfast Cereal</span></a><br />
+<br />
+
+<span class="upper">Beverages</span><br />
+<a href="#" onClick="goto('#softdrinks', this); return false"><span class="lower">Soft Drinks</span></a><br />
+<a href="#" onClick="goto('#coffee', this); return false"><span class="lower">Coffee & Tea</span></a><br />
+<a href="#" onClick="goto('#milk', this); return false"><span class="lower">UHT Milk & Milk Powder</span></a><br />
+<a href="#" onClick="goto('#alcohol', this); return false"><span class="lower">Alcoholic Drink</span></a><br />
+<br />
+
+<a href="#" onClick="goto('#baby', this); return false"><span class="upper">Baby & Kids</span></a><br />
+<br />
+
+<a href="#" onClick="goto('#pet', this); return false"><span class="upper">Pet care</span></a><br />
+<br />
+
+<span class="upper">Household Items</span><br />
+<a href="#" onClick="goto('#laundry', this); return false"><span class="lower">Laundry & Dishwashing</span></a><br />
+<a href="#" onClick="goto('#office', this); return false"><span class="lower">Office Supplies</span></a><br />
+<a href="#" onClick="goto('#tools', this); return false"><span class="lower">Tools & Electrical</span></a><br />
+<a href="#" onClick="goto('#cleaning', this); return false"><span class="lower">Cleaning</span></a><br />
+<br />
+</div>
+
+
+<div class="content1">
+
+<div class="contentbox-wrapper">
+
+    <div id="alcohol" class="contentbox" align="center">
+        <h2>
+            Alcoholic Drink
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b4/img_3037.jpg" class="zoom"><img src="images/products/b4/img_3037.jpg" width="200" height="200" /></a>
+                        <small><h3>Asahi Super Dry</h3></small>
+                        <p>6 x 350 ML</p>
+                        <p style="text-decoration:line-through; color:#999">$20.85</p>
+                        <small><h2>$19.85</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b4/img_5200.jpg" class="zoom"><img src="images/products/b4/img_5200.jpg" width="200" height="200" /></a>
+                        <small><h3>Heineken Lager Beer</h3></small>
+                        <p>6 x 330 ML</p>
+                        <small><h2>$18.30</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b4/IMG_5250.JPG" class="zoom"><img src="images/products/b4/IMG_5250.JPG" width="200" height="200" /></a>
+                        <small><h3>Duvel Belgian Golden Ale</h3></small>
+                        <p>330 ML</p>
+                        <small><h2>$7.50</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b4/IMG_6780.JPG" class="zoom"><img src="images/products/b4/IMG_6780.JPG" width="200" height="200" /></a>
+                        <small><h3>Wittekerke Rose Belgian Beer</h3></small>
+                        <p>250 L</p>
+                        <small><h2>$6.00</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+	<div id="rice" class="contentbox" align="center">
+        <h2>
+            Rice, Noodles & Pasta
+        </h2>
+
+        <section id="product">
+                <ul class="clear">
+                    <li data-id="1">
+                        <div href="#">
+                            <a href="images/products/f1/_DSC4640.jpg" class="zoom"><img src="images/products/f1/_DSC4640.jpg" width="200" height="200" /></a>
+                            <small><h3>Maggi Curry Flavour</h3></small>
+                            <p>(5 + 1) x 79 G</p>
+                            <p style="text-decoration:line-through; color:#999">$2.60</p>
+                            <small><h2>$2.40</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="2">
+                        <div href="#">
+                            <a href="images/products/f1/8888231230012-1.JPG" class="zoom"><img src="images/products/f1/8888231230012-1.JPG" width="200" height="200" /></a>
+                            <small><h3>Flying Man Rice Vermicelli</h3></small>
+                            <p>400 G</p>
+                            <small><h2>$1.50</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="3">
+                        <div href="#">
+                            <a href="images/products/f1/9556001128973-1.JPG" class="zoom"><img src="images/products/f1/9556001128973-1.JPG" width="200" height="200" /></a>
+                            <small><h3>Maggi Chicken Flavour</h3></small>
+                            <p>5 x 77 G</p>
+                            <small><h2>$2.00</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="4">
+                        <div href="#">
+                            <a href="images/products/f1/img_2398.jpg" class="zoom"><img src="images/products/f1/img_2398.jpg" width="200" height="200" /></a>
+                            <small><h3>San Remo Penne Rigate</h3></small>
+                            <p>500 G</p>
+                            <small><h2>$2.50</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="5">
+                        <div href="#">
+                            <a href="images/products/f1/img_3004.jpg" class="zoom"><img src="images/products/f1/img_3004.jpg" width="200" height="200" /></a>
+                            <small><h3>Nissin Chicken Flavour Cup Noodles</h3></small>
+                            <p>75 G</p>
+                            <small><h2>$1.50</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="6">
+                        <div href="#">
+                            <a href="images/products/f1/IMG_7186.JPG" class="zoom"><img src="images/products/f1/IMG_7186.JPG" width="200" height="200" /></a>
+                            <small><h3>Nongshim Kimchi Ramyun Bowl</h3></small>
+                            <p>117 G</p>
+                            <small><h2>$1.30</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="7">
+                        <div href="#">
+                            <a href="images/products/f1/img_7197.jpg" class="zoom"><img src="images/products/f1/img_7197.jpg" width="200" height="200" /></a>
+                            <small><h3>Barilla Penne Rigate n.73</h3></small>
+                            <p>500 G</p>
+                            <p style="text-decoration:line-through; color:#999">$4.00</p>
+                            <small><h2>$3.65</h2></small>
+                        </div>
+                    </li>
+                    <li data-id="8">
+                        <div href="#">
+                            <a href="images/products/f1/IMG_8586.JPG" class="zoom"><img src="images/products/f1/IMG_8586.JPG" width="200" height="200" /></a>
+                            <small><h3>Double F.K. AAA Thai Fragrance White Rice</h3></small>
+                            <p>5 KG</p>
+                            <small><h2>$10.90</h2></small>
+                        </div>
+                    </li>
+                </ul>
+          </section>
+	</div>
+        
+		
+	<div id="snacks" class="contentbox" align="center">
+        <h2>
+            Snacks & Tidbits
+        </h2>
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f2/img_0831.jpg" class="zoom"><img src="images/products/f2/img_0831.jpg" width="200" height="200" /></a>
+                        <small><h3>Cheezels Original Cheese Flavoured Snack</h3></small>
+                        <p>60 G</p>
+                        <small><h2>$1.10</h2></small>
+                    </div>
+                </li>
+                <li data-id="10">
+                    <div href="#">
+                        <a href="images/products/f2/img_1566.jpg" class="zoom"><img src="images/products/f2/img_1566.jpg" width="200" height="200" /></a>
+                        <small><h3>Nutsi Cheez Curls</h3></small>
+                        <p>113 G</p>
+                        <small><h2>$2.90</h2></small>
+                    </div>
+                </li>
+                <li data-id="11">
+                    <div href="#">
+                        <a href="images/products/f2/IMG_6165.JPG" class="zoom"><img src="images/products/f2/IMG_6165.JPG" width="200" height="200" /></a>
+                        <small><h3>Lay's Classic Potato Chips</h3></small>
+                        <p>28.3 G</p>
+                        <small><h2>$0.70</h2></small>
+                    </div>
+                </li>
+                <li data-id="12">
+                    <div href="#">
+                        <a href="images/products/f2/IMG_6501.JPG" class="zoom"><img src="images/products/f2/IMG_6501.JPG" width="200" height="200" /></a>
+                        <small><h3>Chacho's Cheesy Cheese Tortilla Corn Chips</h3></small>
+                        <p>185 G</p>
+                        <small><h2>$2.95</h2></small>
+                    </div>
+                </li>
+                <li data-id="13">
+                    <div href="#">
+                        <a href="images/products/f2/IMG_6514.JPG" class="zoom"><img src="images/products/f2/IMG_6514.JPG" width="200" height="200" /></a>
+                        <small><h3>Twisties Chipster Flaming BBQ Potato Chips</h3></small>
+                        <p>160 G</p>
+                        <small><h2>$2.85</h2></small>
+                    </div>
+                </li>
+                <li data-id="14">
+                    <div href="#">
+                        <a href="images/products/f2/IMG_6616.JPG" class="zoom"><img src="images/products/f2/IMG_6616.JPG" width="200" height="200" /></a>
+                        <small><h3>Pringles Smoky BBQ Potato Crisps</h3></small>
+                        <p>150 G</p>
+                        <small><h2>$2.70</h2></small>
+                    </div>
+                </li>
+    		</ul>
+		</section>
+	</div>
+        
+		
+	<div id="canned" class="contentbox" align="center">
+        <h2>
+            Canned & Ready to Eat
+        </h2>
+		<section id="product">
+        	<ul class="clear">
+                <li data-id="15">
+                    <div href="#">
+                        <a href="images/products/f3/img_3108.jpg" class="zoom"><img src="images/products/f3/img_3108.jpg" width="200" height="200" /></a>
+                        <small><h3>Heinz English Recipe Baked Beans in Tomato Sauce</h3></small>
+                        <p>420 G</p>
+                        <small><h2>$1.35</h2></small>
+                    </div>
+                </li>
+                <li data-id="16">
+                    <div href="#">
+                        <a href="images/products/f3/img_1485.jpg" class="zoom"><img src="images/products/f3/img_1485.jpg" width="200" height="200" /></a>
+                        <small><h3>Leggo's Tomato Paste</h3></small>
+                        <p>250 G</p>
+                        <small><h2>$3.00</h2></small>
+                    </div>
+                </li>
+                <li data-id="17">
+                    <div href="#">
+                        <a href="images/products/f3/img_1477.jpg" class="zoom"><img src="images/products/f3/img_1477.jpg" width="200" height="200" /></a>
+                        <small><h3>S&W Premium Kidney Beans</h3></small>
+                        <p>105 G</p>
+                        <p style="text-decoration:line-through; color:#999">$3.50</p>
+                        <small><h2>$3.05</h2></small>
+                    </div>
+                </li>
+                <li data-id="18">
+                    <div href="#">
+                        <a href="images/products/f3/img_5124.jpg" class="zoom"><img src="images/products/f3/img_5124.jpg" width="200" height="200" /></a>
+                        <small><h3>Swanson Clear Chicken Broth</h3></small>
+                        <p>1 L</p>
+                        <small><h2>$3.60</h2></small>
+                    </div>
+                </li>
+                <li data-id="19">
+                    <div href="#">
+                        <a href="images/products/f3/img_6470.jpg" class="zoom"><img src="images/products/f3/img_6470.jpg" width="200" height="200" /></a>
+                        <small><h3>Cirio Polpa Chopped Tomatoes</h3></small>
+                        <p>400 G</p>
+                        <small><h2>$2.00</h2></small>
+                    </div>
+                </li>
+                <li data-id="20">
+                    <div href="#">
+                        <a href="images/products/f3/img_6486.jpg" class="zoom"><img src="images/products/f3/img_6486.jpg" width="200" height="200" /></a>
+                        <small><h3>S&W Premium Pineapple Chunks</h3></small>
+                        <p>567 G</p>
+                        <small><h2>$2.10</h2></small>
+                    </div>
+                </li>
+        	</ul>
+		</section>
+	</div>
+    
+	
+	<div id="breakfast" class="contentbox" align="center">
+        <h2>
+            Breakfast Cereals
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f4/img_1260.jpg" class="zoom"><img src="https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/460x/i/m/img_7259.jpg" width="200" height="200" /></a>
+                        <small><h3>Kellogg's Rice Krispies Cereal</h3></small>
+                        <p>130 G</p>
+                        <small><h2>$2.70</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f4/img_2558.jpg" class="zoom"><img src="images/products/f4/img_2558.jpg" width="200" height="200" /></a>
+                        <small><h3>Sweet Home Farm Honey Nut with Almonds Granola</h3></small>
+                        <p>682 G</p>
+                        <p style="text-decoration:line-through; color:#999">$9.50</p>
+                        <small><h2>$8.90</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f4/4800361291446-1.JPG" class="zoom"><img src="https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/460x/i/m/img_7259.jpg" width="200" height="200" /></a>
+                        <small><h3>Nestle Milo Whole Grain Cereal</h3></small>
+                        <p>330 G</p>
+                        <small><h2>$5.10</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f4/img_2603.jpg" class="zoom"><img src="images/products/f4/img_2603.jpg" width="200" height="200" /></a>
+                        <small><h3>Kellogg's Classic Corn Flakes Cereal</h3></small>
+                        <p>275 G</p>
+                        <small><h2>$3.55</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/f4/884912014252-1.JPG" class="zoom"><img src="images/products/f4/884912014252-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Post Honey Bunches of Oats with Almonds Whole Grain Cereal</h3></small>
+                        <p>14.5 OZ</p>
+                        <p style="text-decoration:line-through; color:#999">$6.00</p>
+                        <small><h2>$5.80</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+    
+	
+    <div id="softdrinks" class="contentbox" align="center">
+        <h2>
+            Soft Drinks
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b1/8888002076337-1.jpg" class="zoom"><img src="images/products/b1/8888002076337-1.jpg" width="200" height="200" /></a>
+                        <small><h3>Coca-Cola Regular</h3></small>
+                        <p>6 X 330 ML</p>
+                        <small><h2>$4.45</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b1/8888002236472-1.jpg" class="zoom"><img src="https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/460x/i/m/img_7259.jpg" width="200" height="200" /></a>
+                        <small><h3>Glaceau XXX Acai-Blueberry-Pomegranate Vitamin Water</h3></small>
+                        <p>500 ML</p>
+                        <small><h2>$1.75</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b1/img_2331.jpg" class="zoom"><img src="images/products/b1/img_2331.jpg" width="200" height="200" /></a>
+                        <small><h3>Pokka No Sugar Japanese Green Tea</h3></small>
+                        <p>1.5 L</p>
+                        <small><h2>$1.95</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b1/img_2338.jpg" class="zoom"><img src="images/products/b1/img_2338.jpg" width="200" height="200" /></a>
+                        <small><h3>Pokka Lemon Tea</h3></small>
+                        <p>1.5 L</p>
+                        <small><h2>$1.95</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b1/img_3126.jpg" class="zoom"><img src="images/products/b1/img_3126.jpg" width="200" height="200" /></a>
+                        <small><h3>Schweppes Bitter Lemon</h3></small>
+                        <p>330 ML</p>
+                        <small><h2>$0.85</h2></small>
+                    </div>
+                </li>
+                
+			</ul>
+        </section>
+	</div>
+    
+	
+    <div id="coffee" class="contentbox" align="center">
+        <h2>
+            Coffee & Tea
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b2/070177011604-1.JPG" class="zoom"><img src="images/products/b2/070177011604-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Twinings Classics English Breakfast Tea</h3></small>
+                        <p>50 x 2 G</p>
+                        <small><h2>$11.00</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b2/8801055706426-1 (1).JPG" class="zoom"><img src="images/products/b2/8801055706426-1 (1).JPG" width="200" height="200" /></a>
+                        <small><h3>Nescafé Gold Coffee (L)</h3></small>
+                        <p>200 G</p>
+                        <p style="text-decoration:line-through; color:#999">$13.00</p>
+                        <small><h2>$12.70</h2></small>
+                    </div>
+                </li>
+
+
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b2/8888082008860-1.JPG" class="zoom"><img src="images/products/b2/8888082008860-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Nescafé Deluxe Coffee</h3></small>
+                        <p>200 G</p>
+                        <small><h2>$6.20</h2></small>
+                    </div>
+                </li>
+
+
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b2/8888086010302-1.JPG" class="zoom"><img src="images/products/b2/8888086010302-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Lipton Yellow Label Tea (L)</h3></small>
+                        <p>100 x 2 G</p>
+                        <p style="text-decoration:line-through; color:#999">$6.00</p>
+                        <small><h2>$5.55</h2></small>
+                    </div>
+                </li>
+
+
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b2/9556001081131-1.JPG" class="zoom"><img src="images/products/b2/9556001081131-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Nescafé 3-in-1 Mild Coffee</h3></small>
+                        <p>30 x 20 G</p>
+                        <small><h2>$6.30</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+    <div id="milk" class="contentbox" align="center">
+        <h2>
+            UHT Milk & Milk Powder
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b3/IMG_3530.JPG" class="zoom"><img src="images/products/b3/IMG_3530.JPG" width="200" height="200" /></a>
+                        <small><h3>Marigold Full Cream UHT Milk</h3></small>
+                        <p>6 x 250 ML</p>
+                        <small><h2>$3.90</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b3/IMG_7340.JPG" class="zoom"><img src="images/products/b3/IMG_7340.JPG" width="200" height="200" /></a>
+                        <small><h3>Dutch Mill Yoghurt Drink with Mixed Fruits Juice</h3></small>
+                        <p>4 x 90 ML</p>
+                        <small><h2>$2.00</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b3/img_9348.jpg" class="zoom"><img src="images/products/b3/img_9348.jpg" width="200" height="200" /></a>
+                        <small><h3>Anlene Gold High Calcium Low Fat Milk-Based Powder</h3></small>
+                        <p>800 G</p>
+                        <p style="text-decoration:line-through; color:#999">$20.00</p>
+                        <small><h2>$19.40</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b3/img_9688.jpg" class="zoom"><img src="images/products/b3/img_9688.jpg" width="200" height="200" /></a>
+                        <small><h3>F&N Farmhouse Fresh UHT Milk</h3></small>
+                        <p>1 L</p>
+                        <small><h2>$2.10</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+
+
+    <div id="baby" class="contentbox" align="center">
+        <h2>
+            Baby & Kids
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b&k/img_5566.jpg" class="zoom"><img src="images/products/b&k/img_5566.jpg" width="200" height="200" /></a>
+                        <small><h3>Johnson's Baby Ultra Sensitive Skincare Wipes</h3></small>
+                        <p>80 Wipes</p>
+                        <small><h2>$5.70</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b&k/img_5573.jpg" class="zoom"><img src="images/products/b&k/img_5573.jpg" width="200" height="200" /></a>
+                        <small><h3>Johnson's Baby Top-to-Toe Wash</h3></small>
+                        <p>500 ML</p>
+                        <small><h2>$6.50</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b&k/img_7108.jpg" class="zoom"><img src="images/products/b&k/img_7108.jpg" width="200" height="200" /></a>
+                        <small><h3>Kodomo Baby Laundry Detergent Refill Pack</h3></small>
+                        <p>1 L</p>
+                        <p style="text-decoration:line-through; color:#999">$8.00</p>
+                        <small><h2>$7.40</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/b&k/img_7146.jpg" class="zoom"><img src="images/products/b&k/img_7146.jpg" width="200" height="200" /></a>
+                        <small><h3>Kodomo Pro Toothbrush 0.5-3yrs</h3></small>
+                        <p>1 Toothbrush</p>
+                        <small><h2>$1.95</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+    <div id="pet" class="contentbox" align="center">
+        <h2>
+            Pet Care
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/p/050000427543-1.JPG" class="zoom"><img src="images/products/p/050000427543-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Friskies Classic Paté Ocean Whitefish & Tuna Dinner Cat Food</h3></small>
+                        <p>368 G</p>
+                        <p style="text-decoration:line-through; color:#999">$2.00</p>
+                        <small><h2>$1.40</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/p/050000578436-1.JPG" class="zoom"><img src="images/products/p/050000578436-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Fancy Feast Gravy Lovers Ocean Whitefish & Tuna Feast Gourmet Cat Food</h3></small>
+                        <p>85 G</p>
+                        <small><h2>$1.25</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/p/050000578450-1.JPG" class="zoom"><img src="images/products/p/050000578450-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Fancy Feast Gravy Lovers Chicken Feast Gourmet Cat Food</h3></small>
+                        <p>85 G</p>
+                        <small><h2>$1.25</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/p/8885003135230-1.JPG" class="zoom"><img src="images/products/p/8885003135230-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Tostitos Restaurant Style Tortilla Chips</h3></small>
+                        <p>390 G</p>
+                        <p style="text-decoration:line-through; color:#999">$4.45</p>
+                        <small><h2>$4.00</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+    <div id="laundry" class="contentbox" align="center">
+        <h2>
+            Laundry & Dishwashing
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h1/img_0934.jpg" class="zoom"><img src="images/products/h1/img_0934.jpg" width="200" height="200" /></a>
+                        <small><h3>Persil Fibre Intelligent Low Suds Concentrated Liquid Detergent</h3></small>
+                        <p>3 L</p>
+                        <p style="text-decoration:line-through; color:#999">$13.00</p>
+                        <small><h2>$12.65</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h1/img_0961.jpg" class="zoom"><img src="images/products/h1/img_0961.jpg" width="200" height="200" /></a>
+                        <small><h3>Softlan Lavender Fresh Fabric Conditioner Refill Pack</h3></small>
+                        <p>1.8 L</p>
+                        <small><h2>$3.25</h2></small>
+                    </div>
+                </li>
+
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h1/IMG_4187.JPG" class="zoom"><img src="images/products/h1/IMG_4187.JPG" width="200" height="200" /></a>
+                        <small><h3>Kim Poh Dishwashing Liquid</h3></small>
+                        <p>5 L</p>
+                        <small><h2>$5.40</h2></small>
+                    </div>
+                </li>
+
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h1/img_5011.jpg" class="zoom"><img src="images/products/h1/img_5011.jpg" width="200" height="200" /></a>
+                        <small><h3>Finish Diamond Shine Rinse Aid</h3></small>
+                        <p>500 ML</p>
+                        <small><h2>$12.30</h2></small>
+                    </div>
+                </li>
+
+			</ul>
+        </section>
+	</div>
+
+
+
+    <div id="office" class="contentbox" align="center">
+        <h2>
+            Office Supplies
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h2/redmart-288.jpg" class="zoom"><img src="images/products/h2/redmart-288.jpg" width="200" height="200" /></a>
+                        <small><h3>Double A A4 Copier Paper - Case</h3></small>
+                        <p>5 x 500 Sheets</p>
+                        <small><h2>$27.00</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h2/scotch 3m.JPG" class="zoom"><img src="images/products/h2/scotch 3m.JPG" width="200" height="200" /></a>
+                        <small><h3>Scotch Matte Finish Magic Tape</h3></small>
+                        <p>1 Piece</p>
+                        <small><h2>$2.30</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h2/post it 3m.JPG" class="zoom"><img src="images/products/h2/post it 3m.JPG" width="200" height="200" /></a>
+                        <small><h3>3M Post-it Notes</h3></small>
+                        <p>1 Piece</p>
+                        <small><h2>$1.45</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+
+    <div id="tools" class="contentbox" align="center">
+        <h2>
+            Tools & Electrical
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h3/IMG_8671.JPG" class="zoom"><img src="images/products/h3/IMG_8671.JPG" width="200" height="200" /></a>
+                        <small><h3>Energizer AAA Alkaline Batteries</h3></small>
+                        <p>4 Batteries</p>
+                        <small><h2>$3.00</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h3/redmart-240.JPG" class="zoom"><img src="images/products/h3/redmart-240.JPG" width="200" height="200" /></a>
+                        <small><h3>Tartan Clear Sealing Tape</h3></small>
+                        <p>1 Roll</p>
+                        <small><h2>$2.50</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h3/IMG_0320.JPG" class="zoom"><img src="images/products/h3/IMG_0320.JPG" width="200" height="200" /></a>
+                        <small><h3>Philips Tornado 20W Cool Daylight E27 Base</h3></small>
+                        <p>1 Lightbulb</p>
+                        <p style="text-decoration:line-through; color:#999">$9.00</p>
+                        <small><h2>$8.20</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h3/IMG_7823.JPG" class="zoom"><img src="images/products/h3/IMG_7823.JPG" width="200" height="200" /></a>
+                        <small><h3>Command Damage-Free Hanging Medium Utility Hooks</h3></small>
+                        <p>6 Hooks</p>
+                        <small><h2>$10.10</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+
+
+
+    <div id="cleaning" class="contentbox" align="center">
+        <h2>
+            Cleaning
+        </h2>
+        
+        <section id="product">
+            <ul class="clear">
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h4/img_1135.jpg" class="zoom"><img src="images/products/h4/img_1135.jpg" width="200" height="200" /></a>
+                        <small><h3>Dettol 4 In 1 Green Apple Disinfectant Multi Action Cleaner Trigger Spray</h3></small>
+                        <p>500 ML</p>
+                        <small><h2>$5.50</h2></small>
+                    </div>
+                </li>
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h4/9556126639972-1.JPG" class="zoom"><img src="images/products/h4/9556126639972-1.JPG" width="200" height="200" /></a>
+                        <small><h3>Cif Cream Lemon Surface Cleaner</h3></small>
+                        <p>500 ML</p>
+                        <small><h2>$1.85</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h4/img_7152.jpg" class="zoom"><img src="images/products/h4/img_7152.jpg" width="200" height="200" /></a>
+                        <small><h3>Scotch-Brite Heavy Duty Two in One Sponge Pads</h3></small>
+                        <p>3 Sponge Pads</p>
+                        <p style="text-decoration:line-through; color:#999">$4.00</p>
+                        <small><h2>$3.45</h2></small>
+                    </div>
+                </li>
+                
+                
+                <li data-id="9">
+                    <div href="#">
+                        <a href="images/products/h4/img_1083.jpg" class="zoom"><img src="images/products/h4/img_1083.jpg" width="200" height="200" /></a>
+                        <small><h3>Dettol Antiseptic Germicide</h3></small>
+                        <p>1 L</p>
+                        <small><h2>$11.45</h2></small>
+                    </div>
+                </li>
+			</ul>
+        </section>
+	</div>
+    
+</div> <!-- END CONTENT WRAPPER -->
+
+</div> <!-- END CONTENT1 -->
+
+</div> <!-- END LAYOUT -->
+
+<div class="sidebar2" style="background-color:transparent;">
+    <div class="basket">
+        <div class="basket_list">
+            <div class="head">
+                <span class="name">Product name</span>
+                <span class="price">Price ($)</span>
+                <span class="count">Quantity</span>
+            </div>
+            <ul>
+            </ul>
+            <div class="head">
+                <span class = "name">Total :</span>
+                <span class="price"><span id="totalPrice"></span></span>
+                <span class="count"><span id="totalQuantity"></span></span>
+            </div>
+        </div>
+    </div>
+</div> <!-- END SIDEBAR2 -->
+
+</body>
+
+</html>
